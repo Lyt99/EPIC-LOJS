@@ -20,6 +20,12 @@ namespace ProjectEPIC
             }
         }
 
+        /// <summary>
+        /// 写入log到文件并创建ToastNotification
+        /// </summary>
+        /// <param name="logstr"></param>
+        /// <param name="body"></param>
+        /// <param name="bodyExtra"></param>
         public static void logwithNotification(string logstr, string body, string bodyExtra)
         {
             log(logstr);
