@@ -19,11 +19,19 @@ namespace ProjectEPIC
         /// <summary>
         /// 试题名称
         /// </summary>
-        public String name;
+        public String testname;
+        /// <summary>
+        /// 源文件名称
+        /// </summary>
+        public String sourcename;
         /// <summary>
         /// 试题选项
         /// </summary>
         public String option;
+        /// <summary>
+        /// 测试点数目
+        /// </summary>
+        public int points;
         /// <summary>
         /// 试题所在文件夹
         /// </summary>
@@ -33,6 +41,46 @@ namespace ProjectEPIC
         /// </summary>
         public String desc;
         /// <summary>
+        /// 标准读入文件 例：dancer.in
+        /// </summary>
+        public String stdin;
+        /// <summary>
+        /// 标准输出文件 例：dancer.out
+        /// </summary>
+        public String stdout;
+        /// <summary>
+        /// 测试点读入文件 例：dancer10.in
+        /// <summary>
+        public TestPoint[] testpoint;
+    }
+    /// <summary>
+    /// 题目下的测试点
+    /// </summary>
+    public struct TestPoint
+    {
+        /// <summary>
+        /// 测试点读入文件 例：dancer10.in
+        /// <summary>
+        public String In;
+        /// <summary>
+        /// 测试点输出文件 例：dancer10.out
+        /// </summary>
+        public String Out;
+        /// <summary>
+        /// 题目分数
+        /// </summary>
+        public int score;
+        /// <summary>
+        /// 比较类型（忽略行尾空格，不忽略行尾空格，自定义比较器）
+        /// CT_IgnoreLine CT_UnIgnoreLine CT_CustomComparator
+        /// </summary>
+        public int compareType;
+        /// <summary>
+        /// 运行类型（编译源文件(限制系统函数)，编译源文件(不限制函数)，直接运行exe） 
+        /// RT_SourceLimit RT_SourceWithoutLimit RT_Bin
+        /// </summary>
+        public int runType;
+        /// <summary>
         /// 内存限制(M)
         /// </summary>
         public int memorylimit;
@@ -40,23 +88,22 @@ namespace ProjectEPIC
         /// 时间限制(ms)
         /// </summary>
         public int timelimit;
-        /// <summary>
-        /// 测试点数目
-        /// </summary>
-        public int points;
     }
-
     /// <summary>
     /// 测试信息
     /// </summary>
     public struct TestInfo
     {
         /// <summary>
+        /// 评测机版本
+        /// </summary>
+        public String Version;
+        /// <summary>
         /// 测试是否有效
         /// </summary>
         public Boolean Exists;
         /// <summary>
-        /// 测试名称
+        /// 竞赛名称
         /// </summary>
         public String name;
         /// <summary>
@@ -67,10 +114,10 @@ namespace ProjectEPIC
         /// 测试目录
         /// </summary>
         public String dir;
-       // public String[] coption;
-       /// <summary>
-       /// 测试所包含的题目
-       /// </summary>
+        // public String[] coption;
+        /// <summary>
+        /// 测试所包含的题目
+        /// </summary>
         public subject[] subjects;
         /// <summary>
         /// 附加参数
@@ -98,8 +145,8 @@ namespace ProjectEPIC
                     string json = "{\n    \"Compliers\": {\n        \"Cpp\":\"bin\\compliers\\cpp\",\n        \"C\": \"bin\\compliers\\C\",\n        \"Pascal\":\"bin\\Compliers\\pascal\"\n    }\n}";
                     File.WriteAllText("config.json", json);
                     */
-                    MessageBox.Show(null, "错误代码：0x00001\n错误原因：没有找到config.json!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Logger.log("ErrorCode:0x00001"); Logger.log("Program exit");
+                    MessageBox.Show(null, "错误代码：0x0001\n错误原因：没有找到config.json!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Logger.log("ErrorCode:0x0001"); Logger.log("Program exit");
                     return false;
                 }
 
@@ -115,9 +162,10 @@ namespace ProjectEPIC
 
                     return true;
                 }
-                catch(JsonReaderException)
+                catch(JsonReaderException)//json读取异常
                 {
-                    MessageBox.Show("config.json读取失败！");
+                    MessageBox.Show(null, "错误代码：0x0002config.json读取失败！", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Logger.log("ErrorCode:0x0002"); Logger.log("Program exit");
                     return false;
                 }
         }
@@ -129,7 +177,6 @@ namespace ProjectEPIC
         /// <returns>编译器地址</returns>
         public String getComplier(int type)
         {
-
             if (type >= 0 && type <= 2)
             {
                 return compliers[type];
@@ -146,11 +193,11 @@ namespace ProjectEPIC
         /// <param name="type">1=Cpp,2=C,3=PASCAL</param>
         /// <param name="value">编译器地址</param>
         /// <returns>是否成功</returns>
-        public Boolean setComplier(int type, String value)
+        public Boolean setComplier(int type, String path)
         {
             if (type >= 0 && type <= 2)
             {
-                compliers[type] = value;
+                compliers[type] = path;
                 return true;
             }
             else
@@ -166,7 +213,13 @@ namespace ProjectEPIC
         public TestInfo[] getTests() {
             List<TestInfo> result = new List<TestInfo>();
             string dir = this.getTestsDir();
-            if (!(Directory.Exists(dir))) Directory.CreateDirectory(dir);//如果不存在则创建总试题目录
+            Console.WriteLine(dir);
+            if(dir == null)
+            {
+                MessageBox.Show(null, "错误代码：0x0008\n错误原因：获取评测目录失败！", "错误！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.log("0x0008 获取评测目录失败");
+            }
+            else if (!(Directory.Exists(dir))) Directory.CreateDirectory(dir);//如果不存在则创建总试题目录
             DirectoryInfo di = new DirectoryInfo(dir);
 
             DirectoryInfo[] list = di.GetDirectories();
@@ -230,7 +283,8 @@ namespace ProjectEPIC
             }
             catch(JsonReaderException)
             {
-                MessageBox.Show(null,"文件夹 " + dir + " 中testinfo" + ext + "读取失败!可能是json格式错误!","错误");
+                MessageBox.Show(null,"错误代码：0x0003\n错误信息：文件夹 " + dir + " 中testinfo" + ext + "读取失败!可能是json格式错误!","错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.log("0x0003"); Logger.log(dir + " testinfo" + ext + "读取失败"); Logger.log("Program Continue");
                 ret.Exists = false;
                 return ret;
             }
@@ -244,7 +298,8 @@ namespace ProjectEPIC
             }
             catch (NullReferenceException)
             {
-                MessageBox.Show(null, "测试 " + dir + " 加载失败！","提示");
+                MessageBox.Show(null, "错误代码：0x0004\n错误信息：测试 " + dir + " 加载失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.log("0x0004");
                 ret.Exists = false;
                 return ret;
             }
@@ -256,23 +311,47 @@ namespace ProjectEPIC
             {
                 try
                 {
-                sub[i].name = obj["subjects"][i]["name"].ToString();
-                sub[i].memorylimit = int.Parse(obj["subjects"][i]["memorylimit"].ToString());
-                sub[i].desc = obj["subjects"][i]["desc"].ToString();
-                sub[i].dir = obj["subjects"][i]["folder"].ToString();
-                sub[i].option = obj["subjects"][i]["option"].ToString();
-                sub[i].points = int.Parse(obj["subjects"][i]["pointscount"].ToString());
-                sub[i].timelimit = int.Parse(obj["subjects"][i]["timelimit"].ToString());
+                    sub[i].testname = obj["subjects"][i]["name"].ToString();
+                    sub[i].sourcename = obj["subjects"][i]["sourcename"].ToString();
+                    sub[i].option = obj["subjects"][i]["option"].ToString();
+                    sub[i].stdin = obj["subjects"][i]["stdin"].ToString();
+                    sub[i].stdout = obj["subjects"][i]["stout"].ToString();
+                    sub[i].desc = obj["subjects"][i]["desc"].ToString();
+                    sub[i].dir = obj["subjects"][i]["folder"].ToString();
+                    sub[i].points = int.Parse(obj["subjects"][i]["pointscount"].ToString());
+                    for (int j = 0; j < sub[i].points; ++j)
+                    {
+                        try
+                        {
+                            sub[i].testpoint[j].timelimit = int.Parse(obj["subjects"][i]["point"][j]["timelimit"].ToString());
+                            sub[i].testpoint[j].memorylimit = int.Parse(obj["subjects"][i]["point"][j]["memorylimit"].ToString());
+                            sub[i].testpoint[j].In = obj["subjects"][i]["point"][j]["in"].ToString();
+                            sub[i].testpoint[j].Out = obj["subjects"][i]["point"][j]["out"].ToString();
+                            sub[i].testpoint[j].runType = int.Parse(obj["subjects"][i]["point"][j]["runtypt"].ToString());
+                            sub[i].testpoint[j].compareType = int.Parse(obj["subjects"][i]["point"][j]["comparetype"].ToString());
+                            sub[i].testpoint[j].score = int.Parse(obj["subjects"][i]["point"][j]["score"].ToString());
+                        }
+                        catch (NullReferenceException)
+                        {
+                            MessageBox.Show(null, "错误代码：0x0004\n错误信息：竞赛 " + ret.name + " 题目" + sub[i].testname + "测试点" + j.ToString() + "加载失败，可能存在缺少项！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            Logger.log("0x0005 " + "竞赛 " + ret.name + " 题目" + sub[i].testname + "测试点" +  j.ToString() + "加载失败，可能存在缺少项！");
+                            ret.Exists = false;
+                            return ret;
+                        }
+                    }
+
                 }
                 catch (NullReferenceException)
                 {
-                    MessageBox.Show(null,"测试 " + ret.name + " 加载失败，可能存在缺少项！","提示");
+                    MessageBox.Show(null, "错误代码：0x0005\n错误信息：竞赛 " + ret.name + "题目" + i.ToString() + " 加载失败，可能存在缺少项！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Logger.log("0x0006 " + "竞赛 " + ret.name + "题目" + i.ToString() + " 加载失败，可能存在缺少项！");
                     ret.Exists = false;
                     return ret;
                 }
                 catch (FormatException)
                 {
-                    MessageBox.Show(null, "测试 " + ret.name + " 中testinfo" + ext + "存在格式错误！","提示");
+                    MessageBox.Show(null, "错误代码：0x0006\n错误信息：测试 " + ret.name + " 中testinfo" + ext + "存在格式错误！","提示");
+                    Logger.log("0x0007 " + "测试 " + ret.name + " 中testinfo" + ext + "存在格式错误！");
                 }
             }
 
@@ -285,7 +364,6 @@ namespace ProjectEPIC
             }
             catch (NullReferenceException) { };
             return ret;
-
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ProjectEPIC
         /// </summary>
         /// <param name="Body">第一行文本</param>
         /// <param name="BodyExtra">第二行文本</param>
-        public static void CreateToastNotification(string Body,string BodyExtra)
+        public static void CreateToastNotification(string Body, string BodyExtra = "")
         {
             var request = new ToastRequest
             {

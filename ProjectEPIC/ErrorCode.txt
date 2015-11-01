@@ -1,2 +1,4 @@
-´íÎó´úÂë						ËùÔÚÎ»ÖÃ														´íÎóÔ­Òò
-0x00001					ConfigureManager.refresh.File.Exists()						ÆÀ²â»úÅäÖÃÎÄ¼ş[config.json]²»´æÔÚ
+é”™è¯¯ä»£ç 						æ‰€åœ¨ä½ç½®														é”™è¯¯åŸå› 
+0x0001					ConfigureManager.refresh.File.Exists()						è¯„æµ‹æœºé…ç½®æ–‡ä»¶[config.json]ä¸å­˜åœ¨
+0x0002					ConfigureManager.refresh.JsonReaderException				[config.json]è¯»å–å¤±è´¥
+0x0003					ConfigureManager.getTestInfo.JsonReaderException			[testinfo.json]è¯»å–å¤±è´¥

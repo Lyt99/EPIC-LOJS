@@ -20,7 +20,7 @@ namespace ProjectEPIC
             }
         }
 
-        public static void logwithNotification(string logstr, string body, string bodyExtra)
+        public static void logwithNotification(string logstr, string body, string bodyExtra = "")
         {
             log(logstr);
             Notifier.CreateToastNotification(body, bodyExtra);
