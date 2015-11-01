@@ -11,7 +11,6 @@ using System.Windows.Forms;
 
 namespace ProjectEPIC
 {
-
     /// <summary>
     /// 一个题目
     /// </summary>
@@ -93,14 +92,14 @@ namespace ProjectEPIC
         public Boolean refresh()
         {
                 String config;
-
                 if (!File.Exists("config.json"))
                 {
                     /*MessageBox.Show("没有找到配置文件！将自动生成默认文件！");
                     string json = "{\n    \"Compliers\": {\n        \"Cpp\":\"bin\\compliers\\cpp\",\n        \"C\": \"bin\\compliers\\C\",\n        \"Pascal\":\"bin\\Compliers\\pascal\"\n    }\n}";
                     File.WriteAllText("config.json", json);
                     */
-                    MessageBox.Show(null,"没有找到config.json!","错误");
+                    MessageBox.Show(null, "错误代码：0x00001\n错误原因：没有找到config.json!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Logger.log("ErrorCode:0x00001"); Logger.log("Program exit");
                     return false;
                 }
 

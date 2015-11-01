@@ -10,15 +10,13 @@ using System.Windows.Forms;
 
 namespace ProjectEPIC
 {
-
     public partial class FormMain : Form
     {
         ConfigureManager cmanager;
         TestInfo[] testinfolist;
         public FormMain()
         {
-            InitializeComponent();
-
+            InitializeComponent();//初始化窗体
             cmanager = new ConfigureManager();
             if (!cmanager.refresh())
                 System.Environment.Exit(0);
