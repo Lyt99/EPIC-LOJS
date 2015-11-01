@@ -99,7 +99,7 @@ namespace ProjectEPIC
                     File.WriteAllText("config.json", json);
                     */
                     MessageBox.Show(null, "错误代码：0x00001\n错误原因：没有找到config.json!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Logger.log("ErrorCode:0x00001"); Logger.log("Program exit");
+                    Logger.log("ErrorCode:0x00001");
                     return false;
                 }
 
