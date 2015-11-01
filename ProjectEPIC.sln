@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectEPIC", "ProjectEPIC\ProjectEPIC.csproj", "{2BD2A7AC-D546-4896-B536-5F4C4B197DB8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EPIC-LOJS", "EPIC-LOJS\EPIC-LOJS.csproj", "{7B9F13E7-06D4-4042-A591-6D05D44B4CD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2BD2A7AC-D546-4896-B536-5F4C4B197DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BD2A7AC-D546-4896-B536-5F4C4B197DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BD2A7AC-D546-4896-B536-5F4C4B197DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B9F13E7-06D4-4042-A591-6D05D44B4CD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B9F13E7-06D4-4042-A591-6D05D44B4CD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B9F13E7-06D4-4042-A591-6D05D44B4CD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B9F13E7-06D4-4042-A591-6D05D44B4CD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -58,7 +58,7 @@ namespace ProjectEPIC
 
             string textsubjects = String.Empty;
             foreach (subject sub in test.subjects) {
-                textsubjects += sub.testname + ',';
+                textsubjects += sub.name + ',';
             }
 
             textsubjects = textsubjects.Substring(0, textsubjects.Length - 1);

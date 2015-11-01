@@ -22,7 +22,7 @@ namespace ProjectEPIC
 
         private void FormTestView_Load(object sender, EventArgs e)
         {
-            this.Text = String.Format("已打开的测试: {0}", sub.name);
+            this.Text = String.Format("已打开的测试: {0}", test.name);
         }
     }
 }
