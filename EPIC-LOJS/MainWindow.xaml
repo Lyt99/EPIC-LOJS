@@ -10,6 +10,10 @@
         Height="350"
         Width="525"
         ShowTitleBar="True"
-        ShowIconOnTitleBar="True">
-    <Grid/>
+        ShowIconOnTitleBar="True"
+        ShowMaxRestoreButton="False">
+    <Grid>
+        <Button x:Name="button" Content="载入" HorizontalAlignment="Left" Height="33" Margin="405,276,0,0" VerticalAlignment="Top" Width="90" Click="button_Click"/>
+        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="309" VerticalAlignment="Top" Width="212" Margin="7,6,0,0"/>
+    </Grid>
 </Controls:MetroWindow>
