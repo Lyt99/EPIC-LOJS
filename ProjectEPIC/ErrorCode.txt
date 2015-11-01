@@ -1,0 +1,2 @@
+错误代码						所在位置														错误原因
+0x00001					ConfigureManager.refresh.File.Exists()						评测机配置文件[config.json]不存在
