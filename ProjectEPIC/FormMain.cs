@@ -19,7 +19,11 @@ namespace ProjectEPIC
             InitializeComponent();//初始化窗体
             cmanager = new ConfigureManager();
             if (!cmanager.refresh())
+            {
+                Logger.log("程序因配置原因退出");
                 System.Environment.Exit(0);
+            }
+               
         }
 
         private void Form1_Load(object sender, EventArgs e)

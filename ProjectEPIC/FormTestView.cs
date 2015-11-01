@@ -12,11 +12,11 @@ namespace ProjectEPIC
 {
     public partial class FormTestView : Form
     {
-        private TestInfo sub;
+        private TestInfo test;
 
-        public FormTestView(TestInfo parsub)
+        public FormTestView(TestInfo partest)
         {
-            sub = parsub;
+            test = partest;
             InitializeComponent();
         }
 
