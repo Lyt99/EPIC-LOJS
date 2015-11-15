@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace EPIC_LOJS
+namespace EPIC_Core
 {
     /// <summary>
     /// Interaction logic for App.xaml
