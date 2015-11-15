@@ -12,23 +12,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MahApps.Metro.Controls;
 
-namespace EPIC_LOJS
+namespace EPIC_Core
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
         }
 
+
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            listBox.Items.Add("Hello !");
+            Debugger.Init();
+            string path = textBox.Text;
+            if (Debugger.Start(path) == 0)
+                Notifier.CreateToastNotification("成功运行！");
+            else
+                Notifier.CreateToastNotification("成功地失败了");
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

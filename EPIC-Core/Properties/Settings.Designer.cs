@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EPIC_LOJS.Properties
+namespace EPIC_Core.Properties
 {
 
 
