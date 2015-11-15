@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Forms;
+using System.Windows;
 //using System.Collections;
 
-namespace ProjectEPIC
+namespace EPIC_LOJS
 {
     /// <summary>
     /// 一个题目
@@ -81,9 +81,7 @@ namespace ProjectEPIC
 
     class ConfigureManager
     {
-        private string ext = ".epic";
-        static String[] compliers = new String[3];
-        static JObject obj;
+        JObject obj;
 
         /// <summary>
         /// 刷新配置
@@ -98,8 +96,8 @@ namespace ProjectEPIC
                     string json = "{\n    \"Compliers\": {\n        \"Cpp\":\"bin\\compliers\\cpp\",\n        \"C\": \"bin\\compliers\\C\",\n        \"Pascal\":\"bin\\Compliers\\pascal\"\n    }\n}";
                     File.WriteAllText("config.json", json);
                     */
-                    ////MessageBox.Show(null, "错误代码：0x00001\n错误原因：没有找到config.json!", "错误", //MessageBoxButtons.OK, //MessageBoxIcon.Error);
-                    Logger.log("ErrorCode:0x00001");
+                    //MessageBox.Show(null, "错误代码：0x00001\n错误原因：没有找到config.json!", "错误");
+                    //Logger.log("ErrorCode:0x00001");
                     return false;
                 }
 
@@ -108,82 +106,15 @@ namespace ProjectEPIC
                 try
                 {
                     obj = (JObject)JsonConvert.DeserializeObject(config);
-
-                    compliers[0] = obj["Compliers"]["Cpp"].ToString();
-                    compliers[1] = obj["Compliers"]["C"].ToString();
-                    compliers[2] = obj["Compliers"]["Pascal"].ToString();
-
                     return true;
                 }
                 catch(JsonReaderException)
                 {
-                    ////MessageBox.Show("config.json读取失败！");
+                    //MessageBox.Show("config.json读取失败！");
                     return false;
                 }
         }
 
-        ///<summary>
-        /// 获取编译器地址
-        ///</summary>
-        /// <param name="type">1=Cpp,2=C,3=PASCAL</param>
-        /// <returns>编译器地址</returns>
-        public String getComplier(int type)
-        {
-
-            if (type >= 0 && type <= 2)
-            {
-                return compliers[type];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// 设置编译器地址
-        /// </summary>
-        /// <param name="type">1=Cpp,2=C,3=PASCAL</param>
-        /// <param name="value">编译器地址</param>
-        /// <returns>是否成功</returns>
-        public Boolean setComplier(int type, String value)
-        {
-            if (type >= 0 && type <= 2)
-            {
-                compliers[type] = value;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 获得目录下所有有效的测试
-        /// </summary>
-        /// <returns>TestInfo数组</returns>
-        public TestInfo[] getTests() {
-            List<TestInfo> result = new List<TestInfo>();
-            string dir = this.getTestsDir();
-            if (!(Directory.Exists(dir))) Directory.CreateDirectory(dir);//如果不存在则创建总试题目录
-            DirectoryInfo di = new DirectoryInfo(dir);
-
-            DirectoryInfo[] list = di.GetDirectories();
-
-            for (int index = 0; index < list.Length; ++index)
-            {
-                if ((list[index].GetFiles("testinfo" + ext, SearchOption.TopDirectoryOnly)).Length != 0)
-                {//如果存在testinfo文件
-                    TestInfo curinfo = this.getTestInfo(list[index].Name);
-                    if (curinfo.Exists) result.Add(curinfo);//如果有效才加入
-                    //else
-                }
-                //else
-            }
-                return result.ToArray();
-
-        }
 
         
         /// <summary>
@@ -218,19 +149,19 @@ namespace ProjectEPIC
         /// </summary>
         /// <param name="dir">测试目录名</param>
         /// <returns>TextInfo对象</returns>
-        private TestInfo getTestInfo(String dir)
+        public TestInfo getTestInfo(String dir, String infofile)
         {
             TestInfo ret = new TestInfo();
 
             JObject obj;
-            String json = File.ReadAllText(getTestsDir() + @"\" + dir + @"\testinfo" + ext);
+            String json = File.ReadAllText(getTestsDir() + @"\" + dir + @"\" + infofile);
             try
             {
                 obj = (JObject)JsonConvert.DeserializeObject(json);
             }
             catch(JsonReaderException)
             {
-                ////MessageBox.Show(null,"文件夹 " + dir + " 中testinfo" + ext + "读取失败!可能是json格式错误!","错误");
+                //MessageBox.Show(null,"文件夹 " + dir + " 中testinfo" + ext + "读取失败!可能是json格式错误!","错误");
                 ret.Exists = false;
                 return ret;
             }
@@ -244,7 +175,7 @@ namespace ProjectEPIC
             }
             catch (NullReferenceException)
             {
-                ////MessageBox.Show(null, "测试 " + dir + " 加载失败！","提示");
+                //MessageBox.Show(null, "测试 " + dir + " 加载失败！","提示");
                 ret.Exists = false;
                 return ret;
             }
